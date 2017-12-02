@@ -1,0 +1,9 @@
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\bin\Debug\ReadDbFile.exe
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\bin\Debug\ReadDbFile.pdb
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\bin\Debug\System.Data.SQLite.dll
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\obj\x86\Debug\ReadDbFile.csprojResolveAssemblyReference.cache
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\obj\x86\Debug\ReadDbFile.Form1.resources
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\obj\x86\Debug\ReadDbFile.Properties.Resources.resources
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\obj\x86\Debug\ReadDbFile.csproj.GenerateResource.Cache
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\obj\x86\Debug\ReadDbFile.exe
+D:\学习文件\学习工具\学习工具\code\源代码\ReadDbFile\ReadDbFile\obj\x86\Debug\ReadDbFile.pdb
