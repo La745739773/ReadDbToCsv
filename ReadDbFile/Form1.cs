@@ -15,7 +15,7 @@ namespace ReadDbFile
         public Form1()
         {
             InitializeComponent();
-            MessageBox.Show("这是一个消息测试github");
+            //MessageBox.Show("这是一个消息测试github");
         }
         //添加代码用于测试
 
