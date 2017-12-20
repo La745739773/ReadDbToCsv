@@ -25,3 +25,13 @@ C:\Users\i\Desktop\最新版本程序\ReadDbFile\ReadDbFile\obj\x86\Release\Read
 C:\Users\i\Desktop\最新版本程序\ReadDbFile\ReadDbFile\obj\x86\Release\ReadDbFile.Form1.resources
 C:\Users\i\Desktop\最新版本程序\ReadDbFile\ReadDbFile\obj\x86\Release\ReadDbFile.Properties.Resources.resources
 C:\Users\i\Desktop\最新版本程序\ReadDbFile\ReadDbFile\obj\x86\Release\ReadDbFile.csproj.GenerateResource.Cache
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.exe
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.pdb
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\bin\Release\ReadDbFile.exe
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\bin\Release\ReadDbFile.pdb
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\bin\Release\System.Data.SQLite.dll
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.csprojResolveAssemblyReference.cache
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.Form1.resources
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.Properties.Resources.resources
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.csproj.GenerateResource.Cache
+C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.ProgressBar.resources
