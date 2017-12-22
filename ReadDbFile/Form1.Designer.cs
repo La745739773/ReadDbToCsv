@@ -32,11 +32,11 @@
             this.BtnReadAdditionFile = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.PreVersionMode = new System.Windows.Forms.RadioButton();
             this.WalkRbtn = new System.Windows.Forms.RadioButton();
             this.RidRbtn = new System.Windows.Forms.RadioButton();
             this.PublictRbtn = new System.Windows.Forms.RadioButton();
             this.CarRbtn = new System.Windows.Forms.RadioButton();
-            this.PreVersionMode = new System.Windows.Forms.RadioButton();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,10 +84,22 @@
             this.panel2.Size = new System.Drawing.Size(223, 226);
             this.panel2.TabIndex = 3;
             // 
+            // PreVersionMode
+            // 
+            this.PreVersionMode.AutoSize = true;
+            this.PreVersionMode.Location = new System.Drawing.Point(31, 176);
+            this.PreVersionMode.Name = "PreVersionMode";
+            this.PreVersionMode.Size = new System.Drawing.Size(119, 16);
+            this.PreVersionMode.TabIndex = 2;
+            this.PreVersionMode.TabStop = true;
+            this.PreVersionMode.Text = "Previous Version";
+            this.PreVersionMode.UseVisualStyleBackColor = true;
+            this.PreVersionMode.CheckedChanged += new System.EventHandler(this.WalkRbtn_CheckedChanged);
+            // 
             // WalkRbtn
             // 
             this.WalkRbtn.AutoSize = true;
-            this.WalkRbtn.Location = new System.Drawing.Point(31, 137);
+            this.WalkRbtn.Location = new System.Drawing.Point(31, 138);
             this.WalkRbtn.Name = "WalkRbtn";
             this.WalkRbtn.Size = new System.Drawing.Size(95, 16);
             this.WalkRbtn.TabIndex = 2;
@@ -99,7 +111,7 @@
             // RidRbtn
             // 
             this.RidRbtn.AutoSize = true;
-            this.RidRbtn.Location = new System.Drawing.Point(31, 101);
+            this.RidRbtn.Location = new System.Drawing.Point(31, 98);
             this.RidRbtn.Name = "RidRbtn";
             this.RidRbtn.Size = new System.Drawing.Size(89, 16);
             this.RidRbtn.TabIndex = 2;
@@ -131,18 +143,6 @@
             this.CarRbtn.Text = "Car Mode";
             this.CarRbtn.UseVisualStyleBackColor = true;
             this.CarRbtn.CheckedChanged += new System.EventHandler(this.CarRbtn_CheckedChanged);
-            // 
-            // PreVersionMode
-            // 
-            this.PreVersionMode.AutoSize = true;
-            this.PreVersionMode.Location = new System.Drawing.Point(31, 171);
-            this.PreVersionMode.Name = "PreVersionMode";
-            this.PreVersionMode.Size = new System.Drawing.Size(119, 16);
-            this.PreVersionMode.TabIndex = 2;
-            this.PreVersionMode.TabStop = true;
-            this.PreVersionMode.Text = "Previous Version";
-            this.PreVersionMode.UseVisualStyleBackColor = true;
-            this.PreVersionMode.CheckedChanged += new System.EventHandler(this.WalkRbtn_CheckedChanged);
             // 
             // Form1
             // 
