@@ -100,12 +100,79 @@ namespace ReadDbFile
                     PublicTrans_Make_Routes(dbPath, srLine);
                 }
             }
+            else if (Mode == 3)
+            {
+                while ((srLine = sr.ReadLine()) != null)
+                {
+                    ProgressFm.setPos(((progress++) / numOfgroup) * 100);//设置进度条位置
+                    Walking_Riding_Make_Routes(dbPath, srLine);
+                }
+            }
+            else if (Mode == 4)
+            {
+                while ((srLine = sr.ReadLine()) != null)
+                {
+                    ProgressFm.setPos(((progress++) / numOfgroup) * 100);//设置进度条位置
+                    Walking_Riding_Make_Routes(dbPath, srLine);
+                }
+            }
             ProgressFm.Close();//关闭窗体
             sw.Stop();
             TimeSpan ts2 = sw.Elapsed;
             MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "秒转换完毕");
         }
+        private void Walking_Riding_Make_Routes(string dbPath, string csvPath)
+        {            
+            List<string> idArray = new List<string>();
+            string conStr = @"Data Source =" + dbPath;
+            m_dbConnection = new SQLiteConnection(conStr);
+            m_dbConnection.Open();
+            int index = csvPath.IndexOf('+');
+            string origin_lng = csvPath.Substring(index + 1, csvPath.Length - index - 1);
+            string origin_lat = csvPath.Substring(0, index);
+            string CalculateNumSql = "SELECT count(*) FROM path_data WHERE origin_lat = '" + origin_lat + "' AND origin_lng = '" + origin_lng + "'";
+            SQLiteCommand cmd1 = m_dbConnection.CreateCommand();
+            cmd1.CommandText = CalculateNumSql;
+            SQLiteDataReader reader = cmd1.ExecuteReader();
+            reader.Read();
 
+            FileStream csvFile = null;
+            StreamWriter csvSw = null;
+            if (File.Exists(System.IO.Path.GetDirectoryName(dbPath) + "\\" + csvPath + ".csv"))
+            {
+                File.Delete(System.IO.Path.GetDirectoryName(dbPath) + "\\" + csvPath + ".csv");
+            }
+            csvFile = new FileStream(System.IO.Path.GetDirectoryName(dbPath) + "\\" + csvPath + "_routes" + ".csv", FileMode.Create);
+            var utf8WithoutBom = new System.Text.UTF8Encoding(false);
+            csvSw = new StreamWriter(csvFile, utf8WithoutBom);
+
+            int count = int.Parse(reader[0].ToString());
+            int arrayNum = count / 500 + 1;
+            DataTable dtArray = null;
+            for (int i = 0; i < arrayNum; i++)
+            {
+                dtArray = new DataTable();
+                string sqlStr = "SELECT * FROM path_data WHERE origin_lat = '" + origin_lat + "' AND origin_lng = '" + origin_lng + "'" + " limit " + (i * 500).ToString() + "," + 500.ToString();
+                SQLiteCommand command = m_dbConnection.CreateCommand();
+                command.CommandText = sqlStr;
+                SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+                dataAdapter.Fill(dtArray);
+                for (int j = 0; j < dtArray.Rows.Count; j++)
+                {
+                    for (int k = 0; k < dtArray.Columns.Count - 1; k++)
+                    {
+                        csvSw.Write(dtArray.Rows[j][k] + ",");
+                    }
+                    csvSw.WriteLine("\"" + dtArray.Rows[j][dtArray.Columns.Count-1] + "\"");
+                    idArray.Add(dtArray.Rows[j][0].ToString());
+                }
+                ProgressFm.setPos(((i+1)/ numOfgroup * arrayNum) * 100);//设置进度条位置
+            }
+            csvSw.Close();
+            csvFile.Close();
+            idArray.Clear();
+
+        }
         private void PublicTrans_Make_Routes(string dbPath, string csvPath)
         {
             List<string> idArray = new List<string>();
