@@ -562,7 +562,82 @@ namespace ReadDbFile
             txtFS.Close();
             MessageBox.Show("补充完毕");
         }
+        private void extract_Routes_City_Info_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "请选择附加路径文件";
+            dialog.Filter = "txt文件(*.txt)|*.txt";
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            string txtPath = dialog.FileName;
+            FileStream txtFS = new FileStream(txtPath, FileMode.Open);
+            var utf8WithoutBom = new System.Text.UTF8Encoding(false);
+            StreamReader txtSR = new StreamReader(txtFS, utf8WithoutBom);
+            StreamWriter txtSW = new StreamWriter(txtFS, utf8WithoutBom);
+            string aryLine = null;
 
+            OpenFileDialog dialog2 = new OpenFileDialog();
+            dialog2.Title = "请选择文件";
+            dialog2.Filter = "db文件(*.db)|*.db";
+            if (dialog2.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            string dbPath = dialog2.FileName;
+
+            //string dbPath = @"C:\Users\i\Desktop\最新版本程序\CountySeat_info.db";
+            string conStr = @"Data Source =" + dbPath;
+            m_dbConnection = new SQLiteConnection(conStr);
+            m_dbConnection.Open();
+            //开启事务
+            
+            while((aryLine = txtSR.ReadLine()) != null)
+            {
+                FileStream csvFS = new FileStream(System.IO.Path.GetDirectoryName(txtPath) + "\\" + aryLine + ".csv", FileMode.Open);
+                StreamReader csvSR = new StreamReader(csvFS, utf8WithoutBom);
+                SQLiteCommand cmd = m_dbConnection.CreateCommand();
+                int flag = 0;
+                string pathInfo = "";
+                string[] pathInfoArray;
+                var transaction = m_dbConnection.BeginTransaction();
+                while ((pathInfo = csvSR.ReadLine()) != null)
+                {
+                    pathInfoArray = pathInfo.Split(',');
+                    if (flag == 0)
+                    {
+                        string sql = "INSERT INTO county_info VALUES('" + pathInfoArray[7] + pathInfoArray[5] + "','" + pathInfoArray[5] + "','" + pathInfoArray[7] + "','" + pathInfoArray[2] + "','" + pathInfoArray[1] + "')";
+                        cmd.CommandText = sql;
+                        cmd.ExecuteNonQuery();
+                        flag++;
+                    }
+                    SQLiteCommand command = m_dbConnection.CreateCommand();
+                    string sqlStr = "INSERT INTO path_info VALUES(";
+                    sqlStr += pathInfoArray[0] + ",'";
+                    for (int i = 1; i < 10; i++)
+                    {
+                        sqlStr += pathInfoArray[i] + "','";
+                    }
+                    sqlStr += pathInfoArray[10] + "')";
+
+                    command.CommandText = sqlStr;
+                    command.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                csvSR.Close();
+                csvFS.Close();
+            }
+            txtSR.Close();
+            txtFS.Close();
+            m_dbConnection.Close();
+            sw.Stop();
+            TimeSpan ts2 = sw.Elapsed;
+            MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "Finished");
+            //MessageBox.Show("Finished!");
+        }
         private void CarRbtn_CheckedChanged(object sender, EventArgs e)
         {
             if (CarRbtn.Checked == true)
@@ -610,5 +685,7 @@ namespace ReadDbFile
                 Mode = -1;
             }
         }
+
+
     }
 }

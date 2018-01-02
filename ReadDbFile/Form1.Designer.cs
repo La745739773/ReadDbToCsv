@@ -37,15 +37,17 @@
             this.RidRbtn = new System.Windows.Forms.RadioButton();
             this.PublictRbtn = new System.Windows.Forms.RadioButton();
             this.CarRbtn = new System.Windows.Forms.RadioButton();
+            this.extract_Routes_City_Info = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ReadBbBtn
             // 
             this.ReadBbBtn.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ReadBbBtn.Location = new System.Drawing.Point(275, 39);
+            this.ReadBbBtn.Location = new System.Drawing.Point(20, 15);
             this.ReadBbBtn.Name = "ReadBbBtn";
-            this.ReadBbBtn.Size = new System.Drawing.Size(223, 79);
+            this.ReadBbBtn.Size = new System.Drawing.Size(200, 91);
             this.ReadBbBtn.TabIndex = 0;
             this.ReadBbBtn.Text = "读取Route.DB文件";
             this.ReadBbBtn.UseVisualStyleBackColor = true;
@@ -66,9 +68,11 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Location = new System.Drawing.Point(276, 132);
+            this.panel1.Controls.Add(this.ReadBbBtn);
+            this.panel1.Controls.Add(this.extract_Routes_City_Info);
+            this.panel1.Location = new System.Drawing.Point(276, 29);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(239, 111);
+            this.panel1.Size = new System.Drawing.Size(239, 306);
             this.panel1.TabIndex = 2;
             // 
             // panel2
@@ -144,18 +148,32 @@
             this.CarRbtn.UseVisualStyleBackColor = true;
             this.CarRbtn.CheckedChanged += new System.EventHandler(this.CarRbtn_CheckedChanged);
             // 
+            // extract_Routes_City_Info
+            // 
+            this.extract_Routes_City_Info.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.extract_Routes_City_Info.Location = new System.Drawing.Point(20, 205);
+            this.extract_Routes_City_Info.Name = "extract_Routes_City_Info";
+            this.extract_Routes_City_Info.Size = new System.Drawing.Size(200, 91);
+            this.extract_Routes_City_Info.TabIndex = 1;
+            this.extract_Routes_City_Info.Text = "数据处理(实验)";
+            this.extract_Routes_City_Info.UseVisualStyleBackColor = true;
+            this.extract_Routes_City_Info.Click += new System.EventHandler(this.extract_Routes_City_Info_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(536, 318);
+            this.ClientSize = new System.Drawing.Size(536, 374);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.BtnReadAdditionFile);
-            this.Controls.Add(this.ReadBbBtn);
             this.Controls.Add(this.panel1);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -173,6 +191,7 @@
         private System.Windows.Forms.RadioButton PublictRbtn;
         private System.Windows.Forms.RadioButton CarRbtn;
         private System.Windows.Forms.RadioButton PreVersionMode;
+        private System.Windows.Forms.Button extract_Routes_City_Info;
     }
 }
 
