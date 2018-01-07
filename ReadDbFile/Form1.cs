@@ -21,6 +21,7 @@ namespace ReadDbFile
             CarRbtn.Checked = true;
             PreVersionMode.Enabled = false;
             BtnReadAdditionFile.Enabled = false;
+            ProgressFm = new ProgressBar(2, 100);
             //MessageBox.Show("这是一个消息测试github");
         }
         //添加代码用于测试
@@ -594,8 +595,21 @@ namespace ReadDbFile
             m_dbConnection = new SQLiteConnection(conStr);
             m_dbConnection.Open();
             //开启事务
-            
-            while((aryLine = txtSR.ReadLine()) != null)
+            double index = 0;
+            ProgressBar ProgressFm2 = new ProgressBar(2, 100);
+            ProgressFm2.Show(this);
+            ProgressFm2.setPos(0);//设置进度条位置 
+            int num = 0;
+            while ((aryLine = txtSR.ReadLine()) != null)
+            {
+                num++;
+            }
+            //txtSR.BaseStream.Seek(0, SeekOrigin.Begin);
+            txtFS.Close();
+            txtSR.Close();
+            FileStream txtFS2 = new FileStream(txtPath, FileMode.Open);
+            StreamReader txtSR2 = new StreamReader(txtFS2, utf8WithoutBom);
+            while((aryLine = txtSR2.ReadLine()) != null)
             {
                 FileStream csvFS = new FileStream(System.IO.Path.GetDirectoryName(txtPath) + "\\" + aryLine + ".csv", FileMode.Open);
                 StreamReader csvSR = new StreamReader(csvFS, utf8WithoutBom);
@@ -624,17 +638,27 @@ namespace ReadDbFile
                     sqlStr += pathInfoArray[10] + "')";
 
                     command.CommandText = sqlStr;
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        continue;
+                    }
                 }
                 transaction.Commit();
                 csvSR.Close();
                 csvFS.Close();
+                index++;
+                ProgressFm2.setPos((int)(((index + 1) / num) * 100));//设置进度条位置 
             }
-            txtSR.Close();
-            txtFS.Close();
+            txtSR2.Close();
+            txtFS2.Close();
             m_dbConnection.Close();
             sw.Stop();
             TimeSpan ts2 = sw.Elapsed;
+            ProgressFm2.Close();
             MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "Finished");
             //MessageBox.Show("Finished!");
         }
