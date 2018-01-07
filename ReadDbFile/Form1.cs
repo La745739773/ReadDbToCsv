@@ -625,7 +625,14 @@ namespace ReadDbFile
                     {
                         string sql = "INSERT INTO county_info VALUES('" + pathInfoArray[7] + pathInfoArray[5] + "','" + pathInfoArray[5] + "','" + pathInfoArray[7] + "','" + pathInfoArray[2] + "','" + pathInfoArray[1] + "')";
                         cmd.CommandText = sql;
-                        cmd.ExecuteNonQuery();
+                        try
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                        catch (System.Exception ex)
+                        {
+                        	continue;
+                        }
                         flag++;
                     }
                     SQLiteCommand command = m_dbConnection.CreateCommand();
