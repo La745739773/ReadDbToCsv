@@ -594,7 +594,7 @@ namespace ReadDbFile
             string conStr = @"Data Source =" + dbPath;
             m_dbConnection = new SQLiteConnection(conStr);
             m_dbConnection.Open();
-            //开启事务
+
             double index = 0;
             ProgressBar ProgressFm2 = new ProgressBar(2, 100);
             ProgressFm2.Show(this);
@@ -669,6 +669,225 @@ namespace ReadDbFile
             MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "Finished");
             //MessageBox.Show("Finished!");
         }
+
+        private void Add_Pop_Gdp_Btn_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "请选择人口和GDP文件";
+            dialog.Filter = "csv文件(*.csv)|*.csv";
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            string csvPath = dialog.FileName;
+            FileStream csvFS = new FileStream(csvPath, FileMode.Open);
+            var utf8WithoutBom = new System.Text.UTF8Encoding(false);
+            StreamReader csvSR = new StreamReader(csvFS, utf8WithoutBom);
+            int numOrder = 0;
+            string aryLine;
+            while ((aryLine = csvSR.ReadLine()) != null)
+            {
+                numOrder++;
+            }
+            csvSR.BaseStream.Seek(0, SeekOrigin.Begin);
+
+
+
+            OpenFileDialog dialog2 = new OpenFileDialog();
+            dialog2.Title = "请选择文件";
+            dialog2.Filter = "db文件(*.db)|*.db";
+            if (dialog2.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            string dbPath = dialog2.FileName;
+            string conStr = @"Data Source =" + dbPath;
+            m_dbConnection = new SQLiteConnection(conStr);
+            m_dbConnection.Open();
+
+
+            double index = -1;
+            ProgressBar ProgressFm2 = new ProgressBar(2, 100);
+            ProgressFm2.Show(this);
+            ProgressFm2.setPos(0);//设置进度条位置 
+            var transaction = m_dbConnection.BeginTransaction();
+            while ((aryLine = csvSR.ReadLine()) != null)
+            {
+                if (index == -1)
+                {
+                    index++;
+                    continue;
+                }
+                string[] info = aryLine.Split(',');
+                string cityFullname = info[2] + info[1];
+                string sql = "UPDATE county_info SET id = " + info[0] + ",population = " + info[5] + ",GDP = " + info[6] + " WHERE City_FullName = '" + cityFullname + "'";
+                SQLiteCommand cmd = m_dbConnection.CreateCommand();
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+                index++;
+                ProgressFm2.setPos((int)(((index + 1) / numOrder) * 100));//设置进度条位置 
+            }
+            transaction.Commit();
+            ProgressFm2.Close();
+            sw.Stop();
+            TimeSpan ts2 = sw.Elapsed;
+            MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "Finished");
+        }
+        private void Calc_Nhour_Pop_GDP_Btn_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            int Allhour = 10;
+            OpenFileDialog dialog2 = new OpenFileDialog();
+            dialog2.Title = "请选择文件";
+            dialog2.Filter = "db文件(*.db)|*.db";
+            if (dialog2.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            string dbPath = dialog2.FileName;
+            string conStr = @"Data Source =" + dbPath;
+            m_dbConnection = new SQLiteConnection(conStr);
+            m_dbConnection.Open();
+
+
+            for (int i = 1; i <= Allhour; i++)
+            {
+                SQLiteCommand commandTemp = m_dbConnection.CreateCommand();
+                string sql_AddPop = "ALTER TABLE county_info ADD '" + i.ToString() + "hourPop' DOUBLE";
+                commandTemp.CommandText = sql_AddPop;
+                try
+                {
+                    commandTemp.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                	continue;
+                }
+                
+                string sql_AddGDP = "ALTER TABLE county_info ADD '" + i.ToString() + "hourGDP' DOUBLE";
+                commandTemp.CommandText = sql_AddGDP;
+                try
+                {
+                    commandTemp.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    continue;
+                }
+                string sql_AddCounty_Array = "ALTER TABLE county_info ADD '" + i.ToString() + "County_Array' STRING";
+                commandTemp.CommandText = sql_AddCounty_Array;
+                try
+                {
+                    commandTemp.ExecuteNonQuery();
+                }
+                catch (System.Exception ex)
+                {
+                    continue;
+                }
+            }
+
+
+
+            DataTable dTable = new DataTable();
+            string sql = "SELECT * FROM county_info";
+
+            //开启事务
+            var transaction = m_dbConnection.BeginTransaction();
+
+            SQLiteCommand command = m_dbConnection.CreateCommand();
+            command.CommandText = sql;
+
+            SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command);
+            dataAdapter.Fill(dTable);
+            //提交事务
+            transaction.Commit();
+
+
+            Double[] AllPop = new Double[Allhour];
+            Double[] AllGDP = new Double[Allhour];
+            string[] AllCounty_Array = new string[Allhour];
+
+
+            ProgressBar ProgressFm2 = new ProgressBar(2, 100);
+            ProgressFm2.Show(this);
+            ProgressFm2.setPos(0);//设置进度条位置 
+
+            int numOrder = dTable.Rows.Count;
+
+            for (int i = 0; i < numOrder; i++)
+            {
+
+                string origin = dTable.Rows[i][2].ToString();
+                string origin_Region = dTable.Rows[i][3].ToString();
+                string sql_SelectCountyPath = "SELECT destination,destination_region,duration_s FROM path_info WHERE origin = '" + origin + "' AND origin_region = '" + origin_Region + "'";
+                var transaction2 = m_dbConnection.BeginTransaction();
+                SQLiteCommand cmd_SelectCountyPath = m_dbConnection.CreateCommand();
+                cmd_SelectCountyPath.CommandText = sql_SelectCountyPath;
+                SQLiteDataAdapter dataAdapter2 = new SQLiteDataAdapter(cmd_SelectCountyPath);
+                DataTable dT_CountyPath = new DataTable();
+                dataAdapter2.Fill(dT_CountyPath);
+                transaction2.Commit();
+
+                for (int l = 0; l < Allhour; l++)
+                {
+                    AllPop[l] = 0;
+                    AllGDP[l] = 0;
+                    AllCounty_Array[l] = "";
+                }
+                var transaction3 = m_dbConnection.BeginTransaction();
+                for (int j = 0; j < dT_CountyPath.Rows.Count; j++)
+                {
+                    string cityFullName = dT_CountyPath.Rows[j][1].ToString() + dT_CountyPath.Rows[j][0].ToString();
+                    int time = 0;
+                    if (double.Parse(dT_CountyPath.Rows[j][2].ToString()) % 3600 == 0)
+                    {
+                        time = (int)(double.Parse(dT_CountyPath.Rows[j][2].ToString()) / 3600);
+                    }
+                    else
+                    {
+                        time = (int)(double.Parse(dT_CountyPath.Rows[j][2].ToString()) / 3600) + 1;
+                    }
+                    if(time >10)
+                        continue;
+                    string sql_Select_Pop_Gdp = "SELECT population,GDP FROM county_info WHERE City_FullName = '" + cityFullName + "'";
+
+                    SQLiteCommand cmd_Select_Pop_Gdp = m_dbConnection.CreateCommand();
+                    cmd_Select_Pop_Gdp.CommandText = sql_Select_Pop_Gdp;
+                    SQLiteDataReader reader = cmd_Select_Pop_Gdp.ExecuteReader();
+                    reader.Read();
+                    try
+                    {
+                        double poplation = double.Parse(reader[0].ToString());
+                        double GDP = double.Parse(reader[1].ToString());
+                        AllPop[time - 1] += poplation;
+                        AllGDP[time - 1] += GDP;
+                        AllCounty_Array[time - 1] += cityFullName + ";";
+                    }
+                    catch (System.Exception ex)
+                    {
+                    	continue;
+                    }
+                }
+                for(int k = 0;k<Allhour;k++)
+                {
+                    string sql_Update_Pop_Gdp = "UPDATE county_info SET '" + (k + 1).ToString() + "hourPop' = '" + AllPop[k].ToString() + "','" + (k + 1).ToString() + "hourGDP' = '" + AllGDP[k].ToString()
+                        + "','" + (k + 1).ToString() + "County_Array' = '" + AllCounty_Array[k] + "' WHERE City_FullName = '" + origin_Region + origin + "'"; //加Where条件
+                    SQLiteCommand cmd_Update_Pop_Gdp = m_dbConnection.CreateCommand(); 
+                    cmd_Update_Pop_Gdp.CommandText = sql_Update_Pop_Gdp;
+                    cmd_Update_Pop_Gdp.ExecuteNonQuery();
+                }  
+                transaction3.Commit();
+                ProgressFm2.setPos((int)((double)(i + 1) / (double)numOrder * 100));//设置进度条位置 
+            }
+            ProgressFm2.Close();
+            sw.Stop();
+            TimeSpan ts2 = sw.Elapsed;
+            MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "Finished");
+      
+        }
         private void CarRbtn_CheckedChanged(object sender, EventArgs e)
         {
             if (CarRbtn.Checked == true)
@@ -716,7 +935,5 @@ namespace ReadDbFile
                 Mode = -1;
             }
         }
-
-
     }
 }

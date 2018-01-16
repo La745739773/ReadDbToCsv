@@ -31,13 +31,15 @@
             this.ReadBbBtn = new System.Windows.Forms.Button();
             this.BtnReadAdditionFile = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extract_Routes_City_Info = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.PreVersionMode = new System.Windows.Forms.RadioButton();
             this.WalkRbtn = new System.Windows.Forms.RadioButton();
             this.RidRbtn = new System.Windows.Forms.RadioButton();
             this.PublictRbtn = new System.Windows.Forms.RadioButton();
             this.CarRbtn = new System.Windows.Forms.RadioButton();
-            this.extract_Routes_City_Info = new System.Windows.Forms.Button();
+            this.Add_Pop_Gdp_Btn = new System.Windows.Forms.Button();
+            this.Calc_Nhour_Pop_GDP_Btn = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +47,7 @@
             // ReadBbBtn
             // 
             this.ReadBbBtn.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ReadBbBtn.Location = new System.Drawing.Point(20, 15);
+            this.ReadBbBtn.Location = new System.Drawing.Point(20, 3);
             this.ReadBbBtn.Name = "ReadBbBtn";
             this.ReadBbBtn.Size = new System.Drawing.Size(200, 91);
             this.ReadBbBtn.TabIndex = 0;
@@ -55,10 +57,10 @@
             // 
             // BtnReadAdditionFile
             // 
-            this.BtnReadAdditionFile.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnReadAdditionFile.Location = new System.Drawing.Point(298, 139);
+            this.BtnReadAdditionFile.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BtnReadAdditionFile.Location = new System.Drawing.Point(16, 253);
             this.BtnReadAdditionFile.Name = "BtnReadAdditionFile";
-            this.BtnReadAdditionFile.Size = new System.Drawing.Size(200, 91);
+            this.BtnReadAdditionFile.Size = new System.Drawing.Size(99, 43);
             this.BtnReadAdditionFile.TabIndex = 1;
             this.BtnReadAdditionFile.Text = "读取附加文件";
             this.BtnReadAdditionFile.UseVisualStyleBackColor = true;
@@ -68,12 +70,26 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.Calc_Nhour_Pop_GDP_Btn);
+            this.panel1.Controls.Add(this.Add_Pop_Gdp_Btn);
             this.panel1.Controls.Add(this.ReadBbBtn);
+            this.panel1.Controls.Add(this.BtnReadAdditionFile);
             this.panel1.Controls.Add(this.extract_Routes_City_Info);
             this.panel1.Location = new System.Drawing.Point(276, 29);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(239, 306);
             this.panel1.TabIndex = 2;
+            // 
+            // extract_Routes_City_Info
+            // 
+            this.extract_Routes_City_Info.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.extract_Routes_City_Info.Location = new System.Drawing.Point(121, 253);
+            this.extract_Routes_City_Info.Name = "extract_Routes_City_Info";
+            this.extract_Routes_City_Info.Size = new System.Drawing.Size(99, 43);
+            this.extract_Routes_City_Info.TabIndex = 1;
+            this.extract_Routes_City_Info.Text = "制作路径表信息";
+            this.extract_Routes_City_Info.UseVisualStyleBackColor = true;
+            this.extract_Routes_City_Info.Click += new System.EventHandler(this.extract_Routes_City_Info_Click);
             // 
             // panel2
             // 
@@ -148,16 +164,27 @@
             this.CarRbtn.UseVisualStyleBackColor = true;
             this.CarRbtn.CheckedChanged += new System.EventHandler(this.CarRbtn_CheckedChanged);
             // 
-            // extract_Routes_City_Info
+            // Add_Pop_Gdp_Btn
             // 
-            this.extract_Routes_City_Info.Font = new System.Drawing.Font("宋体", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.extract_Routes_City_Info.Location = new System.Drawing.Point(20, 205);
-            this.extract_Routes_City_Info.Name = "extract_Routes_City_Info";
-            this.extract_Routes_City_Info.Size = new System.Drawing.Size(200, 91);
-            this.extract_Routes_City_Info.TabIndex = 1;
-            this.extract_Routes_City_Info.Text = "数据处理(实验)";
-            this.extract_Routes_City_Info.UseVisualStyleBackColor = true;
-            this.extract_Routes_City_Info.Click += new System.EventHandler(this.extract_Routes_City_Info_Click);
+            this.Add_Pop_Gdp_Btn.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Add_Pop_Gdp_Btn.Location = new System.Drawing.Point(20, 100);
+            this.Add_Pop_Gdp_Btn.Name = "Add_Pop_Gdp_Btn";
+            this.Add_Pop_Gdp_Btn.Size = new System.Drawing.Size(200, 67);
+            this.Add_Pop_Gdp_Btn.TabIndex = 2;
+            this.Add_Pop_Gdp_Btn.Text = "增加人口和GDP到db";
+            this.Add_Pop_Gdp_Btn.UseVisualStyleBackColor = true;
+            this.Add_Pop_Gdp_Btn.Click += new System.EventHandler(this.Add_Pop_Gdp_Btn_Click);
+            // 
+            // Calc_Nhour_Pop_GDP_Btn
+            // 
+            this.Calc_Nhour_Pop_GDP_Btn.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Calc_Nhour_Pop_GDP_Btn.Location = new System.Drawing.Point(20, 176);
+            this.Calc_Nhour_Pop_GDP_Btn.Name = "Calc_Nhour_Pop_GDP_Btn";
+            this.Calc_Nhour_Pop_GDP_Btn.Size = new System.Drawing.Size(200, 67);
+            this.Calc_Nhour_Pop_GDP_Btn.TabIndex = 3;
+            this.Calc_Nhour_Pop_GDP_Btn.Text = "计算时段覆盖人口和GDP";
+            this.Calc_Nhour_Pop_GDP_Btn.UseVisualStyleBackColor = true;
+            this.Calc_Nhour_Pop_GDP_Btn.Click += new System.EventHandler(this.Calc_Nhour_Pop_GDP_Btn_Click);
             // 
             // Form1
             // 
@@ -165,7 +192,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(536, 374);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.BtnReadAdditionFile);
             this.Controls.Add(this.panel1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.MaximizeBox = false;
@@ -192,6 +218,8 @@
         private System.Windows.Forms.RadioButton CarRbtn;
         private System.Windows.Forms.RadioButton PreVersionMode;
         private System.Windows.Forms.Button extract_Routes_City_Info;
+        private System.Windows.Forms.Button Add_Pop_Gdp_Btn;
+        private System.Windows.Forms.Button Calc_Nhour_Pop_GDP_Btn;
     }
 }
 

@@ -35,3 +35,14 @@ C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Rele
 C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.Properties.Resources.resources
 C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.csproj.GenerateResource.Cache
 C:\Users\i\Desktop\最新版本程序\ReadDB\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.ProgressBar.resources
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.exe
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.pdb
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\bin\Release\ReadDbFile.exe
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\bin\Release\ReadDbFile.pdb
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\bin\Release\System.Data.SQLite.dll
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.csprojResolveAssemblyReference.cache
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.Form1.resources
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.ProgressBar.resources
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.Properties.Resources.resources
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.csproj.GenerateResource.Cache
+C:\Users\EVLEON\Desktop\最新版本程序\ReadDbToCsv\ReadDbFile\obj\x86\Release\ReadDbFile.InputHourinfo_Dialog.resources
