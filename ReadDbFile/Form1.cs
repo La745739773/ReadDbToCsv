@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Collections;
 using System.Threading;
+using System.Data.OleDb;
 namespace ReadDbFile
 {
     public partial class Form1 : Form
@@ -816,10 +817,8 @@ namespace ReadDbFile
             ProgressFm2.setPos(0);//设置进度条位置 
 
             int numOrder = dTable.Rows.Count;
-
             for (int i = 0; i < numOrder; i++)
             {
-
                 string origin = dTable.Rows[i][2].ToString();
                 string origin_Region = dTable.Rows[i][3].ToString();
                 string sql_SelectCountyPath = "SELECT destination,destination_region,duration_s FROM path_info WHERE origin = '" + origin + "' AND origin_region = '" + origin_Region + "'";
@@ -831,13 +830,39 @@ namespace ReadDbFile
                 dataAdapter2.Fill(dT_CountyPath);
                 transaction2.Commit();
 
+                var transaction3 = m_dbConnection.BeginTransaction();
+
                 for (int l = 0; l < Allhour; l++)
                 {
-                    AllPop[l] = 0;
-                    AllGDP[l] = 0;
-                    AllCounty_Array[l] = "";
+                    if (l == 0)
+                    {
+                        try
+                        {
+                            AllPop[l] = double.Parse(dTable.Rows[i][4].ToString());
+                            AllGDP[l] = double.Parse(dTable.Rows[i][5].ToString());
+                            AllCounty_Array[l] = dTable.Rows[i][1].ToString() + ";";
+                        }
+                        catch (System.Exception ex)
+                        {
+                            AllPop[l] = 0;
+                            AllGDP[l] = 0;
+                            AllCounty_Array[l] = dTable.Rows[i][1].ToString() + ";";
+                        }
+                        continue; 
+                    }
+                    try
+                    {
+                        AllPop[l] = 0;
+                        AllGDP[l] = 0;
+                        AllCounty_Array[l] = "";
+                    }
+                    catch (System.Exception ex)
+                    {
+
+                    }
+
                 }
-                var transaction3 = m_dbConnection.BeginTransaction();
+
                 for (int j = 0; j < dT_CountyPath.Rows.Count; j++)
                 {
                     string cityFullName = dT_CountyPath.Rows[j][1].ToString() + dT_CountyPath.Rows[j][0].ToString();
@@ -871,6 +896,12 @@ namespace ReadDbFile
                     	continue;
                     }
                 }
+                for (int k = 1; k < Allhour;k++ )
+                {
+                    AllPop[k] += AllPop[k - 1];
+                    AllGDP[k] += AllPop[k - 1];
+                    AllCounty_Array[k] = AllCounty_Array[k - 1] + AllCounty_Array[k];
+                }
                 for(int k = 0;k<Allhour;k++)
                 {
                     string sql_Update_Pop_Gdp = "UPDATE county_info SET '" + (k + 1).ToString() + "hourPop' = '" + AllPop[k].ToString() + "','" + (k + 1).ToString() + "hourGDP' = '" + AllGDP[k].ToString()
@@ -878,7 +909,7 @@ namespace ReadDbFile
                     SQLiteCommand cmd_Update_Pop_Gdp = m_dbConnection.CreateCommand(); 
                     cmd_Update_Pop_Gdp.CommandText = sql_Update_Pop_Gdp;
                     cmd_Update_Pop_Gdp.ExecuteNonQuery();
-                }  
+                }
                 transaction3.Commit();
                 ProgressFm2.setPos((int)((double)(i + 1) / (double)numOrder * 100));//设置进度条位置 
             }
@@ -887,6 +918,100 @@ namespace ReadDbFile
             TimeSpan ts2 = sw.Elapsed;
             MessageBox.Show((ts2.TotalMilliseconds / 1000).ToString("0.0") + "Finished");
       
+        }
+        private void ParseError_File_Adjust_Btn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "请选择文件";
+            dialog.Filter = "csv文件(*.csv)|*.csv";
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            string csvPath = dialog.FileName;
+            FileStream csvFS = new FileStream(csvPath, FileMode.Open);
+            var utf8WithoutBom = new System.Text.UTF8Encoding(false);
+            StreamReader csvSR = new StreamReader(csvFS, utf8WithoutBom);
+
+            string aryLine;
+            aryLine = csvSR.ReadLine();
+
+            OpenFileDialog dialog2 = new OpenFileDialog();
+            dialog2.Title = "请选择文件";
+            dialog2.Filter = "csv文件(*.csv)|*.csv";
+            if (dialog2.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            FileStream csvFS2 = new FileStream(dialog2.FileName, FileMode.Open);
+            StreamWriter csvSW = new StreamWriter(csvFS2, utf8WithoutBom);
+            csvSW.WriteLine(aryLine);
+            while ((aryLine = csvSR.ReadLine()) != null)
+            {
+                csvSW.WriteLine(aryLine + ",,,,");
+            }
+
+            csvSW.Close();
+            csvSR.Close();
+            csvFS.Close();
+            MessageBox.Show("finished");
+        }
+
+        private void Choose_OD_EXC_BTN_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Excel文件(*.xls;*.xlsx)|*.xls;*.xlsx|所有文件|*.*";
+            ofd.ValidateNames = true;
+            ofd.CheckPathExists = true;
+            ofd.CheckFileExists = true;
+            if (ofd.ShowDialog() != DialogResult.OK)
+            {
+                return;
+                //其他代码
+            }
+            string strFileName = ofd.FileName;
+            string connstring = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + strFileName + ";Extended Properties='Excel 8.0;HDR=NO;IMEX=1';"; // Office 07及以上版本 不能出现多余的空格 而且分号注意
+            DataTable oriDT = new DataTable();
+            DataTable desDT = new DataTable();
+            using (OleDbConnection conn = new OleDbConnection(connstring))
+            {
+                conn.Open();
+                string SheetName = "ori$";
+                DataTable sheetsName = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "Table" }); //得到所有sheet的名字
+                string firstSheetName = sheetsName.Rows[0][2].ToString(); //得到第一个sheet的名字
+                string sql = string.Format("SELECT * FROM [{0}]", SheetName); //查询字符串
+                OleDbDataAdapter ada = new OleDbDataAdapter(sql, connstring);
+                //DataSet set = new DataSet();
+                ada.Fill(oriDT);
+                SheetName = "des$";
+                sql = string.Format("SELECT * FROM [{0}]", SheetName); //查询字符串
+                ada = new OleDbDataAdapter(sql, connstring);
+                ada.Fill(desDT);
+            }
+
+            FileStream csvFS = new FileStream(System.IO.Path.GetDirectoryName(strFileName) + "\\od_Path.csv", FileMode.OpenOrCreate);
+            var utf8WithoutBom = new System.Text.UTF8Encoding(false);
+            StreamWriter csvSW = new StreamWriter(csvFS, utf8WithoutBom);
+            //id,origin_lat,origin_lng,des_lat,des_lng,origin,des,origin_region,des_region
+            csvSW.WriteLine("id,origin_lat,origin_lng,des_lat,des_lng,origin,des,origin_region,des_region");
+            int id = 1;
+            for (int i = 0; i < oriDT.Rows.Count; i++)
+            {
+                for (int j = 0; j < desDT.Rows.Count; j++)
+                {
+                    string origin_lng = oriDT.Rows[i][2].ToString();
+                    string origin_lat = oriDT.Rows[i][3].ToString();
+                    string des_lng = desDT.Rows[j][2].ToString();
+                    string des_lat = desDT.Rows[j][3].ToString();
+                    csvSW.Write(id.ToString() + ",");
+                    csvSW.Write(origin_lat + "," + origin_lng + "," + des_lat + "," + des_lng + ",");
+                    csvSW.WriteLine(",,,");
+                    id++;
+                }
+            }
+            MessageBox.Show("finished!");
+            csvSW.Close();
+            csvFS.Close();
         }
         private void CarRbtn_CheckedChanged(object sender, EventArgs e)
         {
@@ -935,5 +1060,8 @@ namespace ReadDbFile
                 Mode = -1;
             }
         }
+
+
+
     }
 }

@@ -31,6 +31,9 @@
             this.ReadBbBtn = new System.Windows.Forms.Button();
             this.BtnReadAdditionFile = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ParseError_File_Adjust_Btn = new System.Windows.Forms.Button();
+            this.Calc_Nhour_Pop_GDP_Btn = new System.Windows.Forms.Button();
+            this.Add_Pop_Gdp_Btn = new System.Windows.Forms.Button();
             this.extract_Routes_City_Info = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.PreVersionMode = new System.Windows.Forms.RadioButton();
@@ -38,8 +41,7 @@
             this.RidRbtn = new System.Windows.Forms.RadioButton();
             this.PublictRbtn = new System.Windows.Forms.RadioButton();
             this.CarRbtn = new System.Windows.Forms.RadioButton();
-            this.Add_Pop_Gdp_Btn = new System.Windows.Forms.Button();
-            this.Calc_Nhour_Pop_GDP_Btn = new System.Windows.Forms.Button();
+            this.Choose_OD_EXC_BTN = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -77,8 +79,40 @@
             this.panel1.Controls.Add(this.extract_Routes_City_Info);
             this.panel1.Location = new System.Drawing.Point(276, 29);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(239, 306);
+            this.panel1.Size = new System.Drawing.Size(239, 310);
             this.panel1.TabIndex = 2;
+            // 
+            // ParseError_File_Adjust_Btn
+            // 
+            this.ParseError_File_Adjust_Btn.Location = new System.Drawing.Point(47, 333);
+            this.ParseError_File_Adjust_Btn.Name = "ParseError_File_Adjust_Btn";
+            this.ParseError_File_Adjust_Btn.Size = new System.Drawing.Size(200, 35);
+            this.ParseError_File_Adjust_Btn.TabIndex = 4;
+            this.ParseError_File_Adjust_Btn.Text = "给未抓取文件做格式调整";
+            this.ParseError_File_Adjust_Btn.UseVisualStyleBackColor = true;
+            this.ParseError_File_Adjust_Btn.Click += new System.EventHandler(this.ParseError_File_Adjust_Btn_Click);
+            // 
+            // Calc_Nhour_Pop_GDP_Btn
+            // 
+            this.Calc_Nhour_Pop_GDP_Btn.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Calc_Nhour_Pop_GDP_Btn.Location = new System.Drawing.Point(20, 176);
+            this.Calc_Nhour_Pop_GDP_Btn.Name = "Calc_Nhour_Pop_GDP_Btn";
+            this.Calc_Nhour_Pop_GDP_Btn.Size = new System.Drawing.Size(200, 67);
+            this.Calc_Nhour_Pop_GDP_Btn.TabIndex = 3;
+            this.Calc_Nhour_Pop_GDP_Btn.Text = "计算时段覆盖人口和GDP";
+            this.Calc_Nhour_Pop_GDP_Btn.UseVisualStyleBackColor = true;
+            this.Calc_Nhour_Pop_GDP_Btn.Click += new System.EventHandler(this.Calc_Nhour_Pop_GDP_Btn_Click);
+            // 
+            // Add_Pop_Gdp_Btn
+            // 
+            this.Add_Pop_Gdp_Btn.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Add_Pop_Gdp_Btn.Location = new System.Drawing.Point(20, 100);
+            this.Add_Pop_Gdp_Btn.Name = "Add_Pop_Gdp_Btn";
+            this.Add_Pop_Gdp_Btn.Size = new System.Drawing.Size(200, 67);
+            this.Add_Pop_Gdp_Btn.TabIndex = 2;
+            this.Add_Pop_Gdp_Btn.Text = "增加人口和GDP到db";
+            this.Add_Pop_Gdp_Btn.UseVisualStyleBackColor = true;
+            this.Add_Pop_Gdp_Btn.Click += new System.EventHandler(this.Add_Pop_Gdp_Btn_Click);
             // 
             // extract_Routes_City_Info
             // 
@@ -164,33 +198,23 @@
             this.CarRbtn.UseVisualStyleBackColor = true;
             this.CarRbtn.CheckedChanged += new System.EventHandler(this.CarRbtn_CheckedChanged);
             // 
-            // Add_Pop_Gdp_Btn
+            // Choose_OD_EXC_BTN
             // 
-            this.Add_Pop_Gdp_Btn.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Add_Pop_Gdp_Btn.Location = new System.Drawing.Point(20, 100);
-            this.Add_Pop_Gdp_Btn.Name = "Add_Pop_Gdp_Btn";
-            this.Add_Pop_Gdp_Btn.Size = new System.Drawing.Size(200, 67);
-            this.Add_Pop_Gdp_Btn.TabIndex = 2;
-            this.Add_Pop_Gdp_Btn.Text = "增加人口和GDP到db";
-            this.Add_Pop_Gdp_Btn.UseVisualStyleBackColor = true;
-            this.Add_Pop_Gdp_Btn.Click += new System.EventHandler(this.Add_Pop_Gdp_Btn_Click);
-            // 
-            // Calc_Nhour_Pop_GDP_Btn
-            // 
-            this.Calc_Nhour_Pop_GDP_Btn.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Calc_Nhour_Pop_GDP_Btn.Location = new System.Drawing.Point(20, 176);
-            this.Calc_Nhour_Pop_GDP_Btn.Name = "Calc_Nhour_Pop_GDP_Btn";
-            this.Calc_Nhour_Pop_GDP_Btn.Size = new System.Drawing.Size(200, 67);
-            this.Calc_Nhour_Pop_GDP_Btn.TabIndex = 3;
-            this.Calc_Nhour_Pop_GDP_Btn.Text = "计算时段覆盖人口和GDP";
-            this.Calc_Nhour_Pop_GDP_Btn.UseVisualStyleBackColor = true;
-            this.Calc_Nhour_Pop_GDP_Btn.Click += new System.EventHandler(this.Calc_Nhour_Pop_GDP_Btn_Click);
+            this.Choose_OD_EXC_BTN.Location = new System.Drawing.Point(47, 292);
+            this.Choose_OD_EXC_BTN.Name = "Choose_OD_EXC_BTN";
+            this.Choose_OD_EXC_BTN.Size = new System.Drawing.Size(200, 35);
+            this.Choose_OD_EXC_BTN.TabIndex = 4;
+            this.Choose_OD_EXC_BTN.Text = "选择OD_Excel文件";
+            this.Choose_OD_EXC_BTN.UseVisualStyleBackColor = true;
+            this.Choose_OD_EXC_BTN.Click += new System.EventHandler(this.Choose_OD_EXC_BTN_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(536, 374);
+            this.Controls.Add(this.ParseError_File_Adjust_Btn);
+            this.Controls.Add(this.Choose_OD_EXC_BTN);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -220,6 +244,8 @@
         private System.Windows.Forms.Button extract_Routes_City_Info;
         private System.Windows.Forms.Button Add_Pop_Gdp_Btn;
         private System.Windows.Forms.Button Calc_Nhour_Pop_GDP_Btn;
+        private System.Windows.Forms.Button ParseError_File_Adjust_Btn;
+        private System.Windows.Forms.Button Choose_OD_EXC_BTN;
     }
 }
 
